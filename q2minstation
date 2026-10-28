@@ -1,0 +1,43 @@
+/*Sample Input 3 
+900 940 950 
+910 1200 1120 
+Sample Output 2 
+Explanation: The first train occupies a platform from 9:00 to 9:10. 
+The second and third trains overlap in their station occupancy, so two platforms are sufficient. 
+ */
+import java.util.*;
+public class q2minstation {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        System.out.println("max trains:");
+        int n = sc.nextInt();
+
+        int[] arr = new int[n];
+        int[] dept = new int[n];
+        for(int i=0; i<n; i++){
+            arr[i] = sc.nextInt();
+        }
+        for(int j=0; j<n; j++){
+            dept[j] = sc.nextInt();
+        }
+
+        Arrays.sort(arr);
+        Arrays.sort(dept);
+
+        int i=0, j=0;
+        int platform =0, maxplatform =0;
+        while (i<n && j<n){
+            if(arr[i]<= dept[j]){
+                platform++;
+                maxplatform = Math.max(platform, maxplatform);
+                i++;
+            }
+            else{
+                platform--;
+                j++;
+            }
+        }
+        System.out.println(maxplatform);
+    }
+    
+}
