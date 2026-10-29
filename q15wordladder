@@ -1,0 +1,75 @@
+/*Sample Input 
+hit cog 
+
+6 
+hot 
+dot 
+dog 
+lot 
+log 
+cog 
+ 
+Sample Output 
+4 
+ 
+Explanation: One shortest sequence is hit → hot → dot → dog → cog, which uses four transforma ons.
+ */
+import java.util.*;
+public class q15wordladder {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+
+        String start = sc.nextLine();
+        String target = sc.nextLine();
+        int n = sc.nextInt();
+
+        Set<String> words = new HashSet<>();
+
+        for (int i = 0; i < n; i++) {
+            words.add(sc.nextLine());
+        }
+
+        Queue<String> queue = new LinkedList<>();
+        Map<String, Integer> distance = new HashMap<>();
+
+        queue.add(start);
+        distance.put(start, 0);
+
+        while (!queue.isEmpty()) {
+            String word = queue.poll();
+            int steps = distance.get(word);
+
+            if (word.equals(target)) {
+                System.out.println(steps);
+                return;
+            }
+
+            char[] chars = word.toCharArray();
+
+            for (int i = 0; i < chars.length; i++) {
+                char original = chars[i];
+
+                for (char ch = 'a'; ch <= 'z'; ch++) {
+                    if (ch == original) {
+                        continue;
+                    }
+
+                    chars[i] = ch;
+                    String next = new String(chars);
+
+                    if (words.contains(next)
+                            && !distance.containsKey(next)) {
+                        distance.put(next, steps + 1);
+                        queue.add(next);
+                    }
+                }
+
+                chars[i] = original;
+            }
+        }
+
+        System.out.println(-1);
+        sc.close();
+    }
+}
+
