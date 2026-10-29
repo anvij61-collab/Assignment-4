@@ -1,0 +1,55 @@
+import java.util.Scanner;
+
+/*Sample Input 3 3 
+1 2 -1 
+-3 4 5 
+2 -1 3 
+Sample Output 11 
+ */
+
+public class q9maxrectangle {
+    public static int kadanes(int[]arr){
+        int currentsum =0; 
+        int maxsum = Integer.MIN_VALUE;
+        for (int i = 0; i < arr.length; i++) {
+             currentsum += arr[i];
+
+        maxsum = Math.max(currentsum, maxsum);
+            if(currentsum<0){
+            currentsum =0;
+        }
+
+    }
+    return maxsum;
+}
+    public static void main(String[] args) {
+        Scanner sc = new  Scanner(System.in);
+
+            int rows = sc.nextInt();
+            int cols = sc.nextInt();
+
+            int[][] matrix = new int[rows][cols];
+            for(int i=0; i<rows; i++){
+                for(int j=0; j<cols; j++){
+                    matrix[i][j] = sc.nextInt();
+                }
+            }
+            int ans = Integer.MIN_VALUE;
+            for( int c1 =0;c1< cols; c1++){
+                int[] rowsum = new int[rows];
+                for(int c2=c1; c2<cols; c2++){
+                    
+                    for(int i=0; i<rows; i++){
+                        rowsum[i] += matrix[i][c2];
+                    } 
+                    ans= Math.max(kadanes(rowsum), ans);
+                    ans = Math.max(kadanes(rowsum), ans);
+                    
+                    System.out.println("c1=" + c1 + ", c2=" + c2
+                   + ", rowsum=" + java.util.Arrays.toString(rowsum)
+                   + ", ans=" + ans);
+                }
+            }
+            System.out.println(ans);
+        }
+    }
