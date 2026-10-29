@@ -1,0 +1,54 @@
+/*Sample Input 
+3 3 
+2 -1 2 
+Sample Output 
+3 
+Explana on: The sum of the complete subarray [2, -1, 2] is 3. No shorter subarray reaches the target.*/
+
+import java.util.ArrayDeque;
+import java.util.Deque;
+import java.util.Scanner;
+
+public class q14shortestsubarraywithsumk {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+
+        int n = sc.nextInt();
+        long k = sc.nextLong();
+
+        int[] arr = new int[n];
+
+        for (int i = 0; i < n; i++) {
+            arr[i] = sc.nextInt();
+        }
+
+        long[] prefix = new long[n + 1];
+
+        for (int i = 0; i < n; i++) {
+            prefix[i + 1] = prefix[i] + arr[i];
+        }
+
+        Deque<Integer> dq = new ArrayDeque<>();
+        int minLen = n + 1;
+
+        for (int i = 0; i <= n; i++) {
+
+            while (!dq.isEmpty() &&
+                   prefix[i] - prefix[dq.peekFirst()] >= k) {
+                minLen = Math.min(minLen, i - dq.peekFirst());
+                dq.removeFirst();
+            }
+
+            while (!dq.isEmpty() &&
+                   prefix[i] <= prefix[dq.peekLast()]) {
+                dq.removeLast();
+            }
+
+            dq.addLast(i);
+        }
+
+        System.out.println(minLen == n + 1 ? -1 : minLen);
+
+        sc.close();
+    }
+}
