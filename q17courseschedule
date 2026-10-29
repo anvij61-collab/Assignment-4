@@ -1,0 +1,65 @@
+/*Sample Input 
+4 4 
+0 1 
+1 2 
+2 3 
+3 1 
+p c
+Sample Output 
+NO 
+ 
+Explanation: The relationships 1 → 2 → 3 → 1 form a cycle. Therefore, the prerequisite condi ons cannot 
+all be satisfied.*/
+
+import java.util.*;
+public class q17courseschedule {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+
+        int n = sc.nextInt();
+        int m = sc.nextInt();
+
+        ArrayList<ArrayList<Integer>> adj = new ArrayList<>();
+
+        for(int i=0; i<n ; i++){
+            adj.add(new ArrayList<>());
+        }
+
+        int[] indegree = new int[n];
+
+        for(int i=0; i<m ; i++){
+            int a = sc.nextInt();
+            int b = sc.nextInt();
+
+            adj.get(a).add(b);
+            indegree[b]++;
+        }
+
+        Queue<Integer> queue = new ArrayDeque<>();
+        for(int i=0; i<n; i++){
+            if(indegree[i]==0){
+                queue.add(i);
+            }
+        }
+
+        int completed =0;
+        while(!queue.isEmpty()){
+            int course = queue.poll();
+            completed++;
+
+            for(int next:adj.get(course)){
+                indegree[next]--;
+
+                if(indegree[next]==0){
+                    queue.add(next);
+                }
+            }
+        }
+
+        if(completed ==n){
+            System.out.println("YES");
+        } else{
+            System.out.println("NO");
+        }
+    }
+}
